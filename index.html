@@ -1,458 +1,258 @@
-<!-- index.html (Main Chatbot Interface) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Assistant Pro</title>
-  <style>
-    /* Advanced styling with animations */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-    
-    :root {
-      --primary: #007bff;
-      --success: #28a745;
-      --danger: #dc3545;
-      --gray: #6c757d;
-      --light: #f8f9fa;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-    
-    .chat-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 18px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      overflow: hidden;
-      border: 1px solid #e9ecef;
-    }
-    
-    .chat-header {
-      background: var(--primary);
-      color: white;
-      padding: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    .chat-header h1 {
-      font-size: 1.8rem;
-      margin: 0;
-      display: flex;
-      align-items: center;
-    }
-    
-    .chat-header small {
-      display: block;
-      font-size: 0.8rem;
-      margin-top: 5px;
-    }
-    
-    .chat-box {
-      height: 600px;
-      padding: 25px;
-      overflow-y: auto;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .message {
-      margin: 15px 0;
-      padding: 12px 18px;
-      border-radius: 12px;
-      max-width: 75%;
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-    
-    .user-msg {
-      background: #e8f4ff;
-      margin-left: auto;
-      border: 1px solid #b3d9ff;
-    }
-    
-    .bot-msg {
-      background: #f0f8ff;
-      margin-right: auto;
-      border: 1px solid #d1e7dd;
-    }
-    
-    .input-area {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 10px;
-      padding: 15px 25px;
-      background: var(--light);
-    }
-    
-    #userInput {
-      padding: 14px;
-      border: 2px solid var(--primary);
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: all 0.3s;
-    }
-    
-    #userInput:focus {
-      outline: none;
-      border-color: var(--success);
-      box-shadow: 0 0 0 2px rgba(40,167,69,0.2);
-    }
-    
-    button {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
-    
-    .send-btn {
-      background: var(--primary);
-      color: white;
-    }
-    
-    .send-btn:hover {
-      background: #0056b3;
-    }
-    
-    .upgrade-btn {
-      background: var(--success);
-    }
-    
-    .upgrade-btn:hover {
-      background: #218838;
-    }
-    
-    .coupon-btn {
-      background: var(--gray);
-      color: white;
-    }
-    
-    .coupon-btn:hover {
-      background: #5a6268;
-    }
-    
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-    }
-    
-    .modal-content {
-      background: white;
-      margin: 15% auto;
-      padding: 30px;
-      width: 50%;
-      border-radius: 12px;
-      animation: slideIn 0.5s ease-out;
-    }
-    
-    @keyframes slideIn {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    
-    .plan-card {
-      background: var(--light);
-      border: 1px solid #eee;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 15px 0;
-      transition: transform 0.2s;
-    }
-    
-    .plan-card:hover {
-      transform: scale(1.02);
-    }
-    
-    .logo {
-      width: 50px;
-      height: 50px;
-      margin-right: 15px;
-      border-radius: 10px;
-      border: 2px solid white;
-    }
-    
-    .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--primary);
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 10px;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .message.user { color: #2c3e50; }
+        .message.assistant { color: #42b983; }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hidden { display: none; }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+        }
+
+        .upgrade-banner {
+            background: #ffd700;
+            padding: 10px;
+            text-align: center;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="chat-header">
-      <div>
-        <img src="https://i.imgur.com/6QbX6yA.png" alt="Logo" class="logo">
-        <h1>AI Assistant <small>Modified by SAIF</small></h1>
-      </div>
-      <button class="upgrade-btn" onclick="showUpgradeModal()">Upgrade Plan</button>
-    </div>
-    
-    <div class="chat-box" id="chatBox">
-      <div class="bot-msg">
-        <div class="message">
-          Hello! I'm your AI assistant, modified by SAIF. How can I help you today?
-          <small>Free tier active: 20 messages remaining</small>
+    <div id="chat-container">
+        <div class="upgrade-banner" id="upgrade-banner">
+            Upgrade required for unlimited access
+            <button onclick="showUpgrade()">Upgrade Now</button>
         </div>
-      </div>
+
+        <div class="chat-history" id="chat-history"></div>
+        
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
     </div>
-    
-    <div class="input-area">
-      <input type="text" id="userInput" placeholder="Type your message..." disabled>
-      <button class="coupon-btn" onclick="window.location.href='coupon.html'">Redeem Coupon</button>
-      <button class="send-btn" onclick="sendMessage()">Send</button>
-    </div>
-  </div>
 
-  <div id="upgradeModal" class="modal">
-    <div class="modal-content">
-      <h2>Upgrade Your Plan</h2>
-      <div class="plan-grid" id="planGrid"></div>
-      <button onclick="closeModal()">Close</button>
-    </div>
-  </div>
-
-  <script>
-    const OPENROUTER_API_KEY = "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";
-    const MAX_FREE_MESSAGES = 20;
-    const MESSAGE_RESET_TIME = 6 * 60 * 60 * 1000; // 6 hours
-    const LOCAL_STORAGE_KEYS = {
-      MESSAGE_COUNT: 'saif_chat_message_count',
-      LAST_RESET: 'saif_chat_last_reset',
-      USER_PLAN: 'saif_chat_user_plan',
-      COUPONS: 'saif_chat_coupons'
-    };
-
-    let messageHistory = [];
-    let userPlan = localStorage.getItem(LOCAL_STORAGE_KEYS.USER_PLAN) || 'free';
-
-    // Initialize
-    (function() {
-      checkMessageLimit();
-      updateUI();
-      preloadCoupons();
-    })();
-
-    function sendMessage() {
-      const input = document.getElementById('userInput');
-      const message = input.value.trim();
-      
-      if (!message) return;
-      
-      if (userPlan === 'free' && getMessageCount() >= MAX_FREE_MESSAGES) {
-        showUpgradePrompt();
-        return;
-      }
-      
-      appendMessage(message, 'user');
-      input.value = '';
-      input.focus();
-      
-      // Add to history
-      messageHistory.push({ role: 'user', content: message });
-      
-      // Show loading state
-      const loader = document.createElement('div');
-      loader.className = 'loader';
-      const botMessage = document.createElement('div');
-      botMessage.className = 'bot-msg';
-      botMessage.innerHTML = '<div class="message">Thinking...<div class="loader"></div></div>';
-      document.getElementById('chatBox').appendChild(botMessage);
-      
-      // API call
-      fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'qwen/qwen-vl-plus:free',
-          messages: messageHistory
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        botMessage.remove();
-        const response = data.choices[0].message.content;
-        appendMessage(response, 'bot');
-        messageHistory.push({ role: 'assistant', content: response });
-      })
-      .catch(error => {
-        botMessage.remove();
-        appendMessage('Error: Failed to get response', 'bot');
-        console.error(error);
-      });
-      
-      if (userPlan === 'free') incrementMessageCount();
-    }
-
-    function appendMessage(content, sender) {
-      const chatBox = document.getElementById('chatBox');
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `${sender}-msg`;
-      
-      const messageContent = document.createElement('div');
-      messageContent.className = 'message';
-      messageContent.textContent = content;
-      
-      messageDiv.appendChild(messageContent);
-      chatBox.appendChild(messageDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function getMessageCount() {
-      const count = localStorage.getItem(LOCAL_STORAGE_KEYS.MESSAGE_COUNT);
-      return count ? parseInt(count) : 0;
-    }
-
-    function incrementMessageCount() {
-      const currentCount = getMessageCount();
-      localStorage.setItem(LOCAL_STORAGE_KEYS.MESSAGE_COUNT, currentCount + 1);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.LAST_RESET, Date.now());
-      updateUI();
-    }
-
-    function checkMessageLimit() {
-      const lastReset = localStorage.getItem(LOCAL_STORAGE_KEYS.LAST_RESET);
-      if (lastReset && Date.now() - lastReset > MESSAGE_RESET_TIME) {
-        localStorage.removeItem(LOCAL_STORAGE_KEYS.MESSAGE_COUNT);
-        localStorage.removeItem(LOCAL_STORAGE_KEYS.LAST_RESET);
-      }
-    }
-
-    function showUpgradeModal() {
-      const modal = document.getElementById('upgradeModal');
-      modal.style.display = 'block';
-      generatePlans();
-    }
-
-    function closeModal() {
-      document.getElementById('upgradeModal').style.display = 'none';
-    }
-
-    function generatePlans() {
-      const planGrid = document.getElementById('planGrid');
-      planGrid.innerHTML = '';
-      
-      const plans = [
-        {
-          name: 'Monthly',
-          price: '$9.99',
-          benefits: ['Unlimited messages', 'File uploads', 'Priority support'],
-          coupon: generateCoupon()
-        },
-        {
-          name: 'Yearly',
-          price: '$99.99',
-          benefits: ['All monthly features', '24/7 support', 'Custom templates'],
-          coupon: generateCoupon()
-        },
-        {
-          name: 'Lifetime',
-          price: '$299.99',
-          benefits: ['All features forever', 'Dedicated support', 'Early access'],
-          coupon: generateCoupon()
-        }
-      ];
-      
-      plans.forEach(plan => {
-        const card = document.createElement('div');
-        card.className = 'plan-card';
-        card.innerHTML = `
-          <h3>${plan.name} Plan</h3>
-          <p class="price">${plan.price}</p>
-          <ul>
-            ${plan.benefits.map(benefit => `<li>✓ ${benefit}</li>`).join('')}
-          </ul>
-          <p><strong>Coupon Code:</strong> ${plan.coupon}</p>
-        `;
-        planGrid.appendChild(card);
-      });
-      
-      localStorage.setItem(LOCAL_STORAGE_KEYS.COUPONS, JSON.stringify(plans));
-    }
-
-    function generateCoupon() {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let coupon = 'SAIF-';
-      for (let i = 0; i < 8; i++) {
-        coupon += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return coupon;
-    }
-
-    function updateUI() {
-      const input = document.getElementById('userInput');
-      const remaining = MAX_FREE_MESSAGES - getMessageCount();
-      const status = document.querySelector('.bot-msg small');
-      
-      if (userPlan !== 'free') {
-        input.disabled = false;
-        status.textContent = `${userPlan} plan active: Unlimited messages`;
-        return;
-      }
-      
-      if (remaining > 0) {
-        input.disabled = false;
-        status.textContent = `Free tier active: ${remaining} messages remaining`;
-      } else {
-        input.disabled = true;
-        status.textContent = 'Free tier expired. Please upgrade.';
-      }
-    }
-
-    function showUpgradePrompt() {
-      const modal = document.createElement('div');
-      modal.className = 'modal';
-      modal.innerHTML = `
+    <div class="modal hidden" id="upgrade-modal">
         <div class="modal-content">
-          <h2>Message Limit Reached</h2>
-          <p>You've reached your free message limit. Please upgrade or redeem a coupon to continue.</p>
-          <div class="button-group">
-            <button onclick="window.location.href='coupon.html'">Redeem Coupon</button>
-            <button onclick="showUpgradeModal()">View Plans</button>
-          </div>
+            <h2>Upgrade Plans</h2>
+            <div style="display: flex; gap: 20px;">
+                <div class="plan">
+                    <h3>Monthly</h3>
+                    <ul>
+                        <li>Unlimited messages</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="https://discord.gg/mukYFMfU" target="_blank" class="subscribe-btn">Subscribe</a>
+                </div>
+                <div class="plan">
+                    <h3>Yearly</h3>
+                    <ul>
+                        <li>All monthly features</li>
+                        <li>2 months free</li>
+                    </ul>
+                    <a href="https://discord.gg/mukYFMfU" target="_blank" class="subscribe-btn">Subscribe</a>
+                </div>
+                <div class="plan">
+                    <h3>Lifetime</h3>
+                    <ul>
+                        <li>Forever access</li>
+                        <li>All future features</li>
+                    </ul>
+                    <a href="https://discord.gg/mukYFMfU" target="_blank" class="subscribe-btn">Subscribe</a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <h3>Redeem Coupon</h3>
+                <input type="text" id="coupon-code" placeholder="Coupon code">
+                <button onclick="redeemCoupon()">Apply</button>
+            </div>
+            <button onclick="closeModal()" style="margin-top: 20px;">Close</button>
         </div>
-      `;
-      document.body.appendChild(modal);
-    }
+    </div>
 
-    function preloadCoupons() {
-      if (!localStorage.getItem(LOCAL_STORAGE_KEYS.COUPONS)) {
-        generatePlans();
-      }
-    }
-  </script>
+    <script>
+        const OPENROUTER_API_KEY = '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';
+        let messageCount = 0;
+        let lastReset = localStorage.getItem('lastReset') || Date.now();
+        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+
+        // Initialize
+        (function() {
+            checkMessageLimit();
+            loadChatHistory();
+            updateUI();
+        })();
+
+        function sendMessage() {
+            if (messageCount >= 25 && !isUpgraded()) {
+                document.getElementById('upgrade-banner').style.display = 'block';
+                return;
+            }
+
+            const input = document.getElementById('user-input');
+            if (!input.value.trim()) return;
+
+            // Save user message
+            const userMessage = { role: 'user', content: input.value };
+            chatHistory.push(userMessage);
+            saveChatHistory();
+
+            // Show loading state
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'message assistant';
+            loadingMessage.textContent = 'Thinking...';
+            document.getElementById('chat-history').appendChild(loadingMessage);
+
+            // API call
+            fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "qwen/qwen-vl-plus:free",
+                    messages: chatHistory
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatHistory.push(data.choices[0].message);
+                saveChatHistory();
+                updateChat();
+                incrementMessageCount();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                chatHistory.push({ role: 'system', content: 'Error occurred' });
+                saveChatHistory();
+                updateChat();
+            })
+            .finally(() => {
+                input.value = '';
+            });
+        }
+
+        function updateChat() {
+            const chatHistoryDiv = document.getElementById('chat-history');
+            chatHistoryDiv.innerHTML = '';
+            chatHistory.forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${msg.role}`;
+                msgDiv.textContent = msg.content;
+                chatHistoryDiv.appendChild(msgDiv);
+            });
+        }
+
+        function saveChatHistory() {
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+
+        function loadChatHistory() {
+            chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            updateChat();
+        }
+
+        function checkMessageLimit() {
+            const now = Date.now();
+            if (now - lastReset > 5 * 60 * 60 * 1000) {
+                messageCount = 0;
+                lastReset = now;
+                localStorage.setItem('lastReset', now);
+                localStorage.setItem('messageCount', 0);
+            } else {
+                messageCount = parseInt(localStorage.getItem('messageCount')) || 0;
+            }
+            updateUI();
+        }
+
+        function incrementMessageCount() {
+            messageCount++;
+            localStorage.setItem('messageCount', messageCount);
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('upgrade-banner').style.display = 
+                (messageCount >= 25 && !isUpgraded()) ? 'block' : 'none';
+        }
+
+        function isUpgraded() {
+            // Simple check for demonstration - implement real check with backend
+            return localStorage.getItem('premium') === 'true';
+        }
+
+        function showUpgrade() {
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('upgrade-modal').classList.add('hidden');
+        }
+
+        function redeemCoupon() {
+            const code = document.getElementById('coupon-code').value;
+            // Simulate API call
+            if (code === 'YOUR_COUPON_CODE') { // Replace with real validation
+                localStorage.setItem('premium', 'true');
+                alert('Coupon applied successfully!');
+                closeModal();
+                updateUI();
+            } else {
+                alert('Invalid coupon code');
+            }
+        }
+    </script>
 </body>
 </html>
